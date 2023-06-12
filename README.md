@@ -1,1 +1,1 @@
-HW06. Refactoring of Phonebook («Книга контактів») with help of redux.
+HW07. Refactoring of Phonebook («Книга контактів»): interaction with the backend for storing contacts.
