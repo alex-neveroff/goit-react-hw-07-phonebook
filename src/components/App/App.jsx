@@ -6,6 +6,7 @@ import ContactForm from 'components/ContactForm';
 import ContactList from 'components/ContactList';
 import SearchFilter from 'components/SearchFilter';
 import Notification from 'components/Notification';
+import Loader from 'components/Loader/Loader';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ const App = () => {
       {contacts.length > 0 ? (
         <>
           <SearchFilter />
-          {isLoading && !error && <h3>Request in progress...</h3>}
+          {isLoading && !error && <Loader />}
           {contacts.length > 0 ? (
             <ContactList contacts={contacts} />
           ) : (
