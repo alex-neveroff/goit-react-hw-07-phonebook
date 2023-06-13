@@ -28,7 +28,7 @@ const App = () => {
           <SearchFilter />
           {isLoading && !error && <Loader />}
           {contacts.length > 0 ? (
-            <ContactList contacts={contacts} />
+            <ContactList />
           ) : (
             <Notification message="No matches found" />
           )}
