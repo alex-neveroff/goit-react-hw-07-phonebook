@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { nanoid } from 'nanoid';
-import PropTypes from 'prop-types';
 import { PhonebookForm } from './ContactForm.styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { Notify } from 'notiflix';
+import { addContact } from '../../redux/operations';
 
-const ContactForm = ({ onSubmit }) => {
+const ContactForm = () => {
   const [inputName, setInputName] = useState('');
   const [inputNumber, setInputNumber] = useState('');
-  const inputNameId = nanoid();
-  const inputPhoneId = nanoid();
+  const dispatch = useDispatch();
+  const contacts = useSelector(state => state.contacts.contacts);
 
   const handleChange = event => {
     const { name, value } = event.currentTarget;
@@ -21,12 +22,19 @@ const ContactForm = ({ onSubmit }) => {
   const handleSubmit = event => {
     event.preventDefault();
     const newContact = {
-      id: nanoid(),
       name: inputName,
-      number: inputNumber,
+      phone: inputNumber,
     };
-
-    onSubmit(newContact);
+    const loweredNewContact = newContact.name.toLowerCase();
+    const isContactExists = contacts.some(
+      contact => contact.name.toLowerCase() === loweredNewContact
+    );
+    if (isContactExists) {
+      Notify.failure(`${newContact.name} is already in phonebook.`);
+      return;
+    }
+    dispatch(addContact(newContact));
+    Notify.success(`${newContact.name} added to phonebook successfully!`);
     reset();
   };
 
@@ -37,13 +45,13 @@ const ContactForm = ({ onSubmit }) => {
 
   return (
     <PhonebookForm onSubmit={handleSubmit}>
-      <label className="form-label" htmlFor={inputNameId}>
+      <label className="form-label" htmlFor="contactName">
         Name:
         <input
           className="form-input"
           type="text"
           name="name"
-          id={inputNameId}
+          id="contactName"
           pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           onChange={handleChange}
@@ -51,13 +59,13 @@ const ContactForm = ({ onSubmit }) => {
           required
         />
       </label>
-      <label className="form-label" htmlFor={inputPhoneId}>
+      <label className="form-label" htmlFor="ContactNumber">
         Phone number:
         <input
           className="form-input"
           type="tel"
           name="number"
-          id={inputPhoneId}
+          id="ContactNumber"
           pattern="\+?\d{1,4}?[\-.\s]?\(?\d{1,3}?\)?[\-.\s]?\d{1,4}[\-.\s]?\d{1,4}[\-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           onChange={handleChange}
@@ -70,10 +78,6 @@ const ContactForm = ({ onSubmit }) => {
       </button>
     </PhonebookForm>
   );
-};
-
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
 };
 
 export default ContactForm;

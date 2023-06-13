@@ -5,6 +5,7 @@ import { filterReducer } from 'redux/phonebookSlice';
 const SearchFilter = () => {
   const filter = useSelector(state => state.contacts.filter);
   const dispatch = useDispatch();
+
   const handleFilter = event => {
     dispatch(filterReducer(event.currentTarget.value));
   };
