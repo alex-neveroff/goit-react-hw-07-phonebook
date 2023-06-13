@@ -7,12 +7,13 @@ import ContactList from 'components/ContactList';
 import SearchFilter from 'components/SearchFilter';
 import Notification from 'components/Notification';
 import Loader from 'components/Loader/Loader';
+import { selectContacts, selectError, selectIsLoading } from 'redux/selectors';
 
 const App = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts.contacts);
-  const isLoading = useSelector(state => state.contacts.isLoading);
-  const error = useSelector(state => state.contacts.error);
+  const contacts = useSelector(selectContacts);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
 
   useEffect(() => {
     dispatch(fetchContacts());

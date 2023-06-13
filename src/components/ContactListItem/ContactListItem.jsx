@@ -4,9 +4,10 @@ import { deleteContact } from 'redux/operations';
 import { ReactComponent as CrossIcon } from 'icons/cross.svg';
 import { ContactData } from './ContactListItem.styled';
 import { Notify } from 'notiflix';
+import { selectContacts } from 'redux/selectors';
 
 const ContactListItem = ({ id, name, phone }) => {
-  const contacts = useSelector(state => state.contacts.contacts);
+  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
 
   const handleDelete = contactId => {
